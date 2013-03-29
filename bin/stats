@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use lib '/home/bayashi/dev/_modules/App-LogStats/lib';
+use App::LogStats;
+
+my $stats = App::LogStats->new;
+$stats->run(@ARGV);
+
+__END__
+
+=head1 NAME
+
+stats - This command helps you to calculate data from lines
+
+
+=head1 SYNOPSIS
+
+    $ stats [options] FILE ...
+
+    or
+
+    $ cat FILE | cut -f2 | stats [option]
+
+    options:
+        -f,  --fields        select only these fields to take stats
+        -d,  --delimiter     specify the delimiter to split the log
+        -q,  --quiet         show only the result, not show the log lines
+        -di, --digit         number of the digit after decimal point(default:2)
+        -s,  --strict        ignore the string. treats only strict numbers
+        -h,  --help          show this help
+        -v,  --version       show the version
+
+
+=head1 AUTHOR
+
+Dai Okabayashi E<lt>bayashi@cpan.orgE<gt>
+
+
+=head1 SEE ALSO
+
+L<App::LogStats>
+
+
+=head1 LICENSE
+
+This module is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself. See L<perlartistic>.
+
+
+=cut
