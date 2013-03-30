@@ -34,7 +34,30 @@ sub _finalize {
 
     return unless $self->result->{show_result};
 
-    $self->_put_table;
+    if ($self->config->{tsv}) {
+        $self->_put_tsv;
+    }
+    else {
+        $self->_put_table;
+    }
+}
+
+sub _put_tsv {
+    my $self = shift;
+
+    my @fields = sort keys %{$self->config->{field}};
+
+    print "\n" unless $self->config->{quiet};
+    print join("\t", '', @fields), "\n";
+    for my $col (@RESULT_LIST) {
+        next if !$self->config->{more} && $MORE_RESULT{$col};
+        next if $col eq '_line_';
+        my @rows;
+        for my $i (@fields) {
+            push @rows, $self->_normalize($self->result->{$i}{$col});
+        }
+        print join("\t", $col, @rows), "\n";
+    }
 }
 
 sub _put_table {
