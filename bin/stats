@@ -22,6 +22,7 @@ stats - helps you to calculate data from lines
     $ cat FILE | stats [option]
 
     options:
+             --file          file path
         -f,  --fields        select only these fields to take stats
         -d,  --delimiter     specify the delimiter to split the log
              --more          calculate more results(NOTE: require more memory)
@@ -33,6 +34,28 @@ stats - helps you to calculate data from lines
         -s,  --strict        treats only the strict numbers field
         -h,  --help          show this help
         -v,  --version       show the version
+
+
+=head1 EXAMPLE
+
+If you have the log file which include response time, and response time were logged the 7th element, for example you write the command like below
+
+    $ stats -f7 access_log
+
+then show the result like this
+
+    .------------------.
+    |         |      7 |
+    +---------+--------+
+    | count   |  3,096 |
+    | sum     | 747.20 |
+    +---------+--------+
+    | average |   0.24 |
+    +---------+--------+
+    | max     |   5.01 |
+    | min     |   0.01 |
+    | range   |      5 |
+    '---------+--------'
 
 
 =head1 AUTHOR
