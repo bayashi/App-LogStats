@@ -22,6 +22,7 @@ stats - helps you to calculate data from lines
     $ cat FILE | stats [option]
 
     options:
+             --file          file path
         -f,  --fields        select only these fields to take stats
         -d,  --delimiter     specify the delimiter to split the log
              --more          calculate more results(NOTE: require more memory)

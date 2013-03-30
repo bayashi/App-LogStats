@@ -116,11 +116,29 @@ sub _loop {
 
     my $r = +{};
 
-    while ( my $line = <STDIN> ) {
-        print $line if $self->config->{through};
-        chomp $line;
-        next unless defined $line;
-        $self->_calc_line($r, [ split $self->config->{delimiter}, $line ]);
+    if ( !is_interactive() ) {
+
+        while ( my $line = <STDIN> ) {
+            print $line if $self->config->{through};
+            chomp $line;
+            next unless defined $line;
+            $self->_calc_line($r, [ split $self->config->{delimiter}, $line ]);
+        }
+
+    }
+    elsif ( scalar @{ $self->config->{file} } ) {
+
+        for my $file (@{$self->config->{file}}) {
+            open my $fh, '<', $file or die "$file: No such file";
+            while ( my $line = <$fh> ) {
+                print $line if $self->config->{through};
+                chomp $line;
+                next unless defined $line;
+                $self->_calc_line($r, [ split $self->config->{delimiter}, $line ]);
+            }
+            close $fh;
+        }
+
     }
 
     $self->_after_calc($r);
@@ -218,6 +236,7 @@ sub _merge_opt {
     Getopt::Long::Configure('bundling');
     GetOptionsFromArray(
         $argv,
+        'file=s@'       => \$config->{file},
         'd|delimiter=s' => \$config->{delimiter},
         'f|fields=s'    => \$config->{fields},
         't|through'     => \$config->{through},
@@ -235,6 +254,8 @@ sub _merge_opt {
             exit 1;
         },
     ) or pod2usage(2);
+
+    push @{$config->{file}}, @{$argv};
 
     if (!$config->{digit} || $config->{digit} !~ m!^\d+$!) {
         $config->{digit} = 2;
