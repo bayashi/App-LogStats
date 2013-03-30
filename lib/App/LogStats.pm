@@ -107,7 +107,7 @@ sub _loop {
     my $r = +{};
 
     while ( my $line = <STDIN> ) {
-        print $line unless $self->config->{quiet};
+        print $line if $self->config->{through};
         chomp $line;
         next unless defined $line;
         $self->_calc_line($r, [ split $self->config->{delimiter}, $line ]);
@@ -209,7 +209,7 @@ sub _merge_opt {
         $argv,
         'd|delimiter=s' => \$config->{delimiter},
         'f|fields=s'    => \$config->{fields},
-        'q|quiet'       => \$config->{quiet},
+        't|through'     => \$config->{through},
         'di|digit=i'    => \$config->{digit},
         's|strict'      => \$config->{strict},
         'no-comma'      => \$config->{no_comma},
