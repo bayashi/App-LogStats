@@ -1,7 +1,6 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use lib '/home/bayashi/dev/_modules/App-LogStats/lib';
 use App::LogStats;
 
 my $stats = App::LogStats->new;
