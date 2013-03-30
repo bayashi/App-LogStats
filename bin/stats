@@ -10,7 +10,7 @@ __END__
 
 =head1 NAME
 
-stats - This command helps you to calculate data from lines
+stats - helps you to calculate data from lines
 
 
 =head1 SYNOPSIS
@@ -19,14 +19,18 @@ stats - This command helps you to calculate data from lines
 
     or
 
-    $ cat FILE | cut -f2 | stats [option]
+    $ cat FILE | stats [option]
 
     options:
         -f,  --fields        select only these fields to take stats
         -d,  --delimiter     specify the delimiter to split the log
-        -q,  --quiet         show only the result, not show the log lines
+             --more          calculate more results(NOTE: require more memory)
+        -t,  --through       STDIN is shown
+             --tsv           show the result as TSV
+             --csv           show the result as CSV
         -di, --digit         number of the digit after decimal point(default:2)
-        -s,  --strict        ignore the string. treats only strict numbers
+             --no-comma      not add the comma
+        -s,  --strict        treats only the strict numbers field
         -h,  --help          show this help
         -v,  --version       show the version
 
