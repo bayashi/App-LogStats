@@ -35,29 +35,39 @@ sub _finalize {
     return unless $self->result->{show_result};
 
     if ($self->config->{tsv}) {
-        $self->_put_tsv;
+        $self->_put_delimited_line("\t");
+    }
+    elsif ($self->config->{csv}) {
+        $self->_put_delimited_line(',');
     }
     else {
         $self->_put_table;
     }
 }
 
-sub _put_tsv {
-    my $self = shift;
+sub _put_delimited_line {
+    my ($self, $delimiter) = @_;
 
     my @fields = sort keys %{$self->config->{field}};
 
     print "\n" unless $self->config->{quiet};
-    print join("\t", '', @fields), "\n";
+    print join($delimiter, '', map { $self->_quote($_) } @fields), "\n";
     for my $col (@RESULT_LIST) {
         next if !$self->config->{more} && $MORE_RESULT{$col};
         next if $col eq '_line_';
-        my @rows;
+        my @rows = ( $self->_quote($col) );
         for my $i (@fields) {
-            push @rows, $self->_normalize($self->result->{$i}{$col});
+            push @rows, $self->_quote( $self->_normalize($self->result->{$i}{$col}) );
         }
-        print join("\t", $col, @rows), "\n";
+        print join($delimiter, @rows), "\n";
     }
+}
+
+sub _quote {
+    my ($self, $value) = @_;
+
+    return $value unless $self->config->{csv};
+    return '"'. $value. '"';
 }
 
 sub _put_table {
@@ -215,6 +225,7 @@ sub _merge_opt {
         's|strict'      => \$config->{strict},
         'no-comma'      => \$config->{no_comma},
         'tsv'           => \$config->{tsv},
+        'csv'           => \$config->{csv},
         'more'          => \$config->{more},
         'h|help'        => sub {
             pod2usage(1);
