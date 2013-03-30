@@ -12,9 +12,13 @@ my $builder = Module::Build->new(
     },
     requires => {
         'perl' => '5.8.1',
-        'Carp' => 0,
+        'Getopt::Long' => 2.38,
+        'Pod::Usage' => 0,
+        'IO::Interactive' => 0,
+        'Class::Accessor::Lite' => 0,
     },
     add_to_cleanup      => [ 'App-LogStats-*' ],
+    script_files        => [ 'bin/stats' ],
     meta_merge     => {
       resources => {
         repository  => 'http://github.com/bayashi/App-LogStats'
