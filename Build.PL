@@ -16,6 +16,7 @@ my $builder = Module::Build->new(
         'Pod::Usage' => 0,
         'IO::Interactive' => 0,
         'Class::Accessor::Lite' => 0,
+        'Text::ASCIITable' => 0,
     },
     add_to_cleanup      => [ 'App-LogStats-*' ],
     script_files        => [ 'bin/stats' ],
