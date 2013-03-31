@@ -6,14 +6,15 @@ use Test::Exception;
 
 use App::LogStats;
 
-if (!$ENV{STATS_ALL_TEST}) {
-    Test::More::plan skip_all => 'require ENV: STATS_ALL_TEST';
-    exit;
+{
+    no warnings 'redefine';
+    local *App::LogStats::is_interactive = sub { 1 };
 }
 
 {
     my $stats = App::LogStats->new;
     isa_ok($stats, 'App::LogStats');
+
     stdout_is {
         $stats->run;
     } '', 'just run';
