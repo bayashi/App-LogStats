@@ -26,7 +26,7 @@ our %MORE_RESULT = (
 
 sub run {
     my $self = shift;
-    $self->_prepare(\@_)->_loop->_finalize;
+    $self->_prepare(\@_)->_main->_finalize;
 }
 
 sub _prepare {
@@ -84,7 +84,7 @@ sub _merge_opt {
     }
 }
 
-sub _loop {
+sub _main {
     my $self = shift;
 
     my $r = +{};
