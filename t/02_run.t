@@ -41,8 +41,8 @@ test_log(<<'_TXT_', 'share/log1');
 '---------+------'
 _TXT_
 
-
-test_log(<<'_TXT_', 'share/log2');
+{
+    my $expect = <<'_TXT_';
 
 .--------------.
 |         |  1 |
@@ -58,6 +58,9 @@ test_log(<<'_TXT_', 'share/log2');
 '---------+----'
 _TXT_
 
+    test_log($expect, 'share/log2');
+    test_log($expect, '-f1', 'share/log2');
+}
 
 test_log(<<'_TXT_', '-f1,2', 'share/log2');
 
