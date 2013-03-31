@@ -15,9 +15,7 @@ use App::LogStats;
     my $stats = App::LogStats->new;
     isa_ok($stats, 'App::LogStats');
 
-    stdout_is {
-        $stats->run;
-    } '', 'just run';
+    stdout_is { $stats->run; } '', 'just run';
 }
 
 {
