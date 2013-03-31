@@ -6,7 +6,7 @@ use Pod::Usage;
 use IO::Interactive qw/is_interactive/;
 use Text::ASCIITable;
 
-our $VERSION = '0.011';
+our $VERSION = '0.012';
 
 use Class::Accessor::Lite (
     new => 1,
