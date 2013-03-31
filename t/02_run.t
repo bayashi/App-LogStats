@@ -25,7 +25,7 @@ use App::LogStats;
     } qr/^_no_exists_file_: No such file/, 'no_exists_file';
 }
 
-    test_log(<<'_TXT_', 'share/log1');
+test_log(<<'_TXT_', 'share/log1');
 
 .----------------.
 |         |    1 |
@@ -56,6 +56,23 @@ test_log(<<'_TXT_', 'share/log2');
 | min     |  1 |
 | range   |  4 |
 '---------+----'
+_TXT_
+
+
+test_log(<<'_TXT_', '-f1,2', 'share/log2');
+
+.-------------------.
+|         |  1 |  2 |
++---------+----+----+
+| count   |  5 |  5 |
+| sum     | 15 | 40 |
++---------+----+----+
+| average |  3 |  8 |
++---------+----+----+
+| max     |  5 | 10 |
+| min     |  1 |  6 |
+| range   |  4 |  4 |
+'---------+----+----'
 _TXT_
 
 done_testing;
