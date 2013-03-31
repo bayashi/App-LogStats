@@ -127,7 +127,7 @@ sub _loop {
 
     print $line if $self->config->{through};
     chomp $line;
-    next unless $line;
+    return unless $line;
     $self->_calc_line($r, [ split $self->config->{delimiter}, $line ]);
 }
 
@@ -138,9 +138,9 @@ sub _calc_line {
     for my $element (@{$elements}) {
         $i++;
         next unless $self->config->{field}{$i};
-        if ( ($self->config->{strict} && $element =~ m!^(\d+\.?\d+?)$!)
+        if ( ($self->config->{strict} && $element =~ m!^(\d+\.?(:?\d+)?)$!)
                 || (!$self->config->{strict} && $element =~ m!\d!) ) {
-            my ($num) = ($element =~ m!^(\d+\.?\d+?)!);
+            my ($num) = ($element =~ m!^(\d+\.?(:?\d+)?)!);
             $num ||= 0; # FIXME
             $r->{$i}{count}++;
             $r->{$i}{sum} += $num;
