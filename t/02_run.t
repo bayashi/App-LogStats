@@ -45,4 +45,27 @@ _TXT_
     stdout_is { $stats->run('share/log1'); } $expect, 'share/log1';
 }
 
+{
+    my $expect = <<'_TXT_';
+
+.--------------.
+|         |  1 |
++---------+----+
+| count   |  5 |
+| sum     | 15 |
++---------+----+
+| average |  3 |
++---------+----+
+| max     |  5 |
+| min     |  1 |
+| range   |  4 |
+'---------+----'
+_TXT_
+    my $stats = App::LogStats->new;
+    stdout_is { $stats->run('share/log2'); } $expect, 'share/log2';
+}
+
+
+
+
 done_testing;
