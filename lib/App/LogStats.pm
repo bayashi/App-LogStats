@@ -134,12 +134,13 @@ sub _loop {
 sub _calc_line {
     my ($self, $r, $elements) = @_;
 
+    my $strict = $self->config->{strict};
     my $i = 0;
     for my $element (@{$elements}) {
         $i++;
         next unless $self->config->{field}{$i};
-        if ( ($self->config->{strict} && $element =~ m!^(\d+\.?(:?\d+)?)$!)
-                || (!$self->config->{strict} && $element =~ m!\d!) ) {
+        if ( (!$strict && $element =~ m!\d!)
+                || ($strict && $element =~ m!^(\d+\.?(:?\d+)?)$!) ) {
             my ($num) = ($element =~ m!^(\d+\.?(:?\d+)?)!);
             $num ||= 0; # FIXME
             $r->{$i}{count}++;
