@@ -67,6 +67,12 @@ sub _merge_opt {
 
     push @{$config->{file}}, @{$argv};
 
+    $self->_validate_config($config);
+}
+
+sub _validate_config {
+    my ($self, $config) = @_;
+
     if (!$config->{digit} || $config->{digit} !~ m!^\d+$!) {
         $config->{digit} = 2;
     }
