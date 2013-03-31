@@ -25,8 +25,7 @@ use App::LogStats;
     } qr/^_no_exists_file_: No such file/, 'no_exists_file';
 }
 
-{
-    my $expect = <<'_TXT_';
+    test_log(<<'_TXT_', 'share/log1');
 
 .----------------.
 |         |    1 |
@@ -41,12 +40,9 @@ use App::LogStats;
 | range   |    9 |
 '---------+------'
 _TXT_
-    my $stats = App::LogStats->new;
-    stdout_is { $stats->run('share/log1'); } $expect, 'share/log1';
-}
 
-{
-    my $expect = <<'_TXT_';
+
+test_log(<<'_TXT_', 'share/log2');
 
 .--------------.
 |         |  1 |
@@ -61,11 +57,12 @@ _TXT_
 | range   |  4 |
 '---------+----'
 _TXT_
-    my $stats = App::LogStats->new;
-    stdout_is { $stats->run('share/log2'); } $expect, 'share/log2';
-}
-
-
-
 
 done_testing;
+
+sub test_log {
+    my ($expect, @cmd) = @_;
+
+    my $stats = App::LogStats->new;
+    stdout_is { $stats->run(@cmd); } $expect, join(' ', @cmd);
+}
