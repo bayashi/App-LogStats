@@ -24,6 +24,15 @@ our %MORE_RESULT = (
     mode   => 1,
 );
 
+our @DRAW_TABLE = (
+    [' ',' ','-',' '],
+    [' ',' ',' '],
+    [' ',' ','-',' '],
+    [' ',' ',' '],
+    [' ',' ','-',' '],
+    [' ',' ','-',' '],
+);
+
 sub run {
     my $self = shift;
     $self->_prepare(\@_)->_main->_finalize;
@@ -258,7 +267,7 @@ sub _put_table {
         $t->addRow($col, @rows);
     }
     print "\n" unless $self->config->{quiet};
-    print $t;
+    print $t->draw(@DRAW_TABLE);
 }
 
 sub _quote {
