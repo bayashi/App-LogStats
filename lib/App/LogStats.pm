@@ -98,7 +98,7 @@ sub _main {
     if ( !is_interactive() ) {
 
         while ( my $line = <STDIN> ) {
-            $self->_loop(\$line);
+            $self->_loop(\$line => $r);
         }
 
     }
@@ -107,7 +107,7 @@ sub _main {
         for my $file (@{$self->config->{file}}) {
             open my $fh, '<', $file or die "$file: No such file";
             while ( my $line = <$fh> ) {
-                $self->_loop(\$line);
+                $self->_loop(\$line => $r);
             }
             close $fh;
         }
@@ -121,7 +121,7 @@ sub _main {
 }
 
 sub _loop {
-    my ($self, $line_ref) = @_;
+    my ($self, $line_ref, $r) = @_;
 
     my $line = $$line_ref;
 
@@ -273,7 +273,7 @@ sub _normalize {
     return '-' unless defined $value;
 
     if ($value =~ m!\.!) {
-        $value = sprintf("%.". $self->config->{digit}. "f",  $value);
+        $value = sprintf("%.". $self->config->{digit}. 'f',  $value);
     }
 
     unless ($self->config->{no_comma}) {
