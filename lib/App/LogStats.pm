@@ -98,10 +98,7 @@ sub _main {
     if ( !is_interactive() ) {
 
         while ( my $line = <STDIN> ) {
-            print $line if $self->config->{through};
-            chomp $line;
-            next unless defined $line;
-            $self->_calc_line($r, [ split $self->config->{delimiter}, $line ]);
+            $self->_loop(\$line);
         }
 
     }
@@ -110,10 +107,7 @@ sub _main {
         for my $file (@{$self->config->{file}}) {
             open my $fh, '<', $file or die "$file: No such file";
             while ( my $line = <$fh> ) {
-                print $line if $self->config->{through};
-                chomp $line;
-                next unless defined $line;
-                $self->_calc_line($r, [ split $self->config->{delimiter}, $line ]);
+                $self->_loop(\$line);
             }
             close $fh;
         }
@@ -124,6 +118,17 @@ sub _main {
 
     $self->result($r);
     $self;
+}
+
+sub _loop {
+    my ($self, $line_ref) = @_;
+
+    my $line = $$line_ref;
+
+    print $line if $self->config->{through};
+    chomp $line;
+    next unless $line;
+    $self->_calc_line($r, [ split $self->config->{delimiter}, $line ]);
 }
 
 sub _calc_line {
