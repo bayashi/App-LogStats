@@ -69,7 +69,7 @@ sub _merge_opt {
             pod2usage(1);
         },
         'v|version' => sub {
-            print "cl v$App::LogStats::VERSION\n";
+            print "stats v$App::LogStats::VERSION\n";
             exit 1;
         },
     ) or pod2usage(2);
