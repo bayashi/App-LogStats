@@ -58,6 +58,61 @@ then show the result like this
       range          5  
      --------- -------- 
 
+Or no option was spesified, C<stats> will calculate the first element.
+
+    $ stats access_log
+    
+     --------- ------ 
+                   1  
+     --------- ------ 
+      count       10  
+      sum         55  
+     --------- ------ 
+      average   5.50  
+     --------- ------ 
+      max         10  
+      min          1  
+      range        9  
+     --------- ------ 
+
+This is a bit complex example.
+
+    $ cat example_log
+    1100,1200
+    2300,1300
+    3400,1400
+
+    $ cat example_log | stats -d',' -f1,2 --no-comma --digit 3 --more
+    
+     --------- ---------- ------
+                       1      2
+     --------- ---------- ------
+      count            3      3
+      sum           6800   3900
+     --------- ---------- ------
+      average   2266.667   1300
+      median        2300   1300
+      mode      2266.667   1300
+     --------- ---------- ------
+      max           3400   1400
+      min           1100   1200
+      range         2300    200
+     --------- ---------- ------
+
+OK, you can get the result as CSV
+
+    $ cat example_log | stats -d',' -f1,2 --no-comma --digit 3 --more --csv
+    
+    ,"1","2"
+    "count","3","3"
+    "sum","6800","3900"
+    "average","2266.667","1300"
+    "median","2300","1300"
+    "mode","2266.667","1300"
+    "max","3400","1400"
+    "min","1100","1200"
+    "range","2300","200"
+
 
 =head1 CONFIGURATION
 
