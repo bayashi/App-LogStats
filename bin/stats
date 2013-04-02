@@ -59,6 +59,18 @@ then show the result like this
      --------- -------- 
 
 
+=head1 CONFIGURATION
+
+C<stats> command will look for a configuration file before reading its command line parameters.
+
+The default configuration file is C<.statsrc> but you can specify it by C<--rc> option. And the location of a configuration file is $HOME but if the STATSRC_DIR environment variable is set, C<stats> will look for config in that directory or current.
+
+The configuration file is just a list of names and values, separated by colons. Values that take lists are just space separated. A sample configuration file might read:
+
+    more: 1
+    tsv: 1
+
+
 =head1 AUTHOR
 
 Dai Okabayashi E<lt>bayashi@cpan.orgE<gt>

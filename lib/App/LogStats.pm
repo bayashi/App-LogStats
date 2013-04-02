@@ -66,7 +66,7 @@ sub _set_rc {
 
     my %config;
 
-    for my $dir ($ENV{STATS_DIR}, $ENV{HOME}, '.') {
+    for my $dir ($ENV{STATSRC_DIR}, $ENV{HOME}, '.') {
         next unless $dir;
         my $file = File::Spec->catfile($dir, $rc_file);
         next unless -e $file;
