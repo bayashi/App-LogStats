@@ -244,7 +244,7 @@ sub _calc_mode {
     return $list->[0] unless @{$list} > 1;
     my %hash;
     $hash{$_}++ for @{$list};
-    my $max_val = ( sort { $hash{$b} <=> $hash{$a} } values %hash )[0];
+    my $max_val = ( sort { $b <=> $a } values %hash )[0];
     for my $key (keys %hash) {
         delete $hash{$key} unless $hash{$key} == $max_val;
     }
