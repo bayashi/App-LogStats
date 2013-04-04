@@ -272,24 +272,29 @@ sub _finalize {
 
     return unless $self->result->{show_result};
 
+    my $output_lines;
     if ($self->config->{tsv}) {
-        $self->_put_delimited_line("\t");
+        $output_lines = $self->_view_delimited_line("\t");
     }
     elsif ($self->config->{csv}) {
-        $self->_put_delimited_line(',');
+        $output_lines = $self->_view_delimited_line(',');
     }
     else {
-        $self->_put_table;
+        $output_lines = $self->_view_table;
+    }
+
+    print "\n" unless $self->config->{quiet};
+    for my $line ( @{$output_lines} ) {
+        print "$line\n";
     }
 }
 
-sub _put_delimited_line {
+sub _view_delimited_line {
     my ($self, $delimiter) = @_;
 
     my @fields = sort keys %{$self->config->{field}};
-
-    print "\n" unless $self->config->{quiet};
-    print join($delimiter, '', map { $self->_quote($_) } @fields), "\n";
+    my @output;
+    push @output, join($delimiter, '', map { $self->_quote($_) } @fields);
     for my $col (@RESULT_LIST) {
         next if !$self->config->{more} && $MORE_RESULT{$col};
         next if $col eq '_line_';
@@ -297,11 +302,12 @@ sub _put_delimited_line {
         for my $i (@fields) {
             push @rows, $self->_quote( $self->_normalize($self->result->{$i}{$col}) );
         }
-        print join($delimiter, @rows), "\n";
+        push @output, join($delimiter, @rows);
     }
+    return \@output;
 }
 
-sub _put_table {
+sub _view_table {
     my $self = shift;
 
     my @fields = sort keys %{$self->config->{field}};
@@ -320,8 +326,7 @@ sub _put_table {
         }
         $t->addRow($col, @rows);
     }
-    print "\n" unless $self->config->{quiet};
-    print $t->draw(@DRAW_TABLE);
+    return [ split( "\n", $t->draw(@DRAW_TABLE) ) ];
 }
 
 sub _quote {
