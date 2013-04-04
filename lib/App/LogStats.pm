@@ -3,7 +3,6 @@ use strict;
 use warnings;
 use File::Spec;
 use Getopt::Long qw/GetOptionsFromArray/;
-use Pod::Usage;
 use IO::Interactive qw/is_interactive/;
 use Text::ASCIITable;
 
@@ -114,17 +113,24 @@ sub _merge_opt {
         'more'          => \$config->{more},
         'rc=s'          => \$config->{rc},
         'h|help'        => sub {
-            pod2usage(1);
+            $self->_show_usage(1);
         },
         'v|version' => sub {
             print "stats v$App::LogStats::VERSION\n";
             exit 1;
         },
-    ) or pod2usage(2);
+    ) or $self->_show_usage(2);
 
     push @{$config->{file}}, @{$argv};
 
     $self->_validate_config($config);
+}
+
+sub _show_usage {
+    my ($self, $exitval) = @_;
+
+    require Pod::Usage;
+    Pod::Usage::pod2usage($exitval);
 }
 
 sub _validate_config {
