@@ -111,6 +111,8 @@ sub _merge_opt {
         'tsv'           => \$config->{tsv},
         'csv'           => \$config->{csv},
         'more'          => \$config->{more},
+        'cr'            => \$config->{cr},
+        'crlf'          => \$config->{crlf},
         'rc=s'          => \$config->{rc},
         'h|help'        => sub {
             $self->_show_usage(1);
@@ -283,9 +285,11 @@ sub _finalize {
         $output_lines = $self->_view_table;
     }
 
-    print "\n" unless $self->config->{quiet};
+    my $lf = $self->config->{cr} ? "\r" : $self->config->{crlf} ? "\r\n" : "\n";
+
+    print $lf unless $self->config->{quiet};
     for my $line ( @{$output_lines} ) {
-        print "$line\n";
+        print $line, $lf;
     }
 }
 

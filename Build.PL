@@ -11,6 +11,7 @@ my $builder = Module::Build->new(
         'Test::More' => 0.88,
         'Test::Output' => 0,
         'Test::Exception' => 0,
+        'Exporter' => 0,
     },
     requires => {
         'perl' => '5.8.1',
