@@ -3,8 +3,7 @@ use strict;
 use warnings;
 use App::LogStats;
 
-my $stats = App::LogStats->new;
-$stats->run(@ARGV);
+my $stats = App::LogStats->new->run(@ARGV);
 
 __END__
 

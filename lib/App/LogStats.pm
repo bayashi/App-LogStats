@@ -362,8 +362,7 @@ App::LogStats - calculate lines
 
     use App::LogStats;
 
-    my $cl = App::LogStats->new;
-    $cl->run(@ARGV);
+    my $stats = App::LogStats->new->run(@ARGV);
 
 
 =head1 DESCRIPTION
