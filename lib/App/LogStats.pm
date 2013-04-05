@@ -6,7 +6,7 @@ use Getopt::Long qw/GetOptionsFromArray/;
 use IO::Interactive qw/is_interactive/;
 use Text::ASCIITable;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Class::Accessor::Lite (
     new => 1,
