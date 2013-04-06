@@ -121,6 +121,7 @@ test_stats(<<'_TXT_', '--more', 'share/log1');
   min           1  
   range         9  
   variance   9.17  
+  stddev     3.03  
  ---------- ------ 
 _TXT_
 
