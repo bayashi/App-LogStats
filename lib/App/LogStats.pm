@@ -223,13 +223,13 @@ sub _after_calc {
 
     for my $i (keys %{$r}) {
         next unless $r->{$i}{count};
+        $r->{show_result} ||= 1;
         $r->{$i}{average} = $r->{$i}{sum} / $r->{$i}{count};
+        $r->{$i}{range}   = $r->{$i}{max} - $r->{$i}{min};
         if ($self->config->{more}) {
             $r->{$i}{median} = $self->_calc_median($r->{$i}{list});
             $r->{$i}{mode}   = $self->_calc_mode($r->{$i}{list});
         }
-        $r->{$i}{range}   = $r->{$i}{max} - $r->{$i}{min};
-        $r->{show_result} ||= 1;
     }
 }
 
