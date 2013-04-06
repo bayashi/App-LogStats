@@ -227,25 +227,30 @@ sub _after_calc {
         $r->{$i}{average} = $r->{$i}{sum} / $r->{$i}{count};
         $r->{$i}{range}   = $r->{$i}{max} - $r->{$i}{min};
         if ($self->config->{more}) {
-            $r->{$i}{median} = $self->_calc_median($r->{$i}{list});
-            $r->{$i}{mode}   = $self->_calc_mode($r->{$i}{list});
+            $r->{$i}{median} = $self->_calc_median($i, $r);
+            $r->{$i}{mode}   = $self->_calc_mode($i, $r);
         }
     }
 }
 
 sub _calc_median {
-    my ($self, $list) = @_;
+    my ($self, $i, $r) = @_;
+
+    my $list = $r->{$i}{list};
 
     return unless ref $list eq 'ARRAY';
     return $list->[0] unless @{$list} > 1;
     @{$list} = sort { $a <=> $b } @{$list};
-    return $list->[ $#{$list} / 2 ] if @{$list} & 1;
-    my $mid = @{$list} / 2;
+    my $element_count = scalar(@{$list});
+    return $list->[ $#{$list} / 2 ] if $element_count & 1;
+    my $mid = $element_count / 2;
     return ( $list->[ $mid - 1 ] + $list->[ $mid ] ) / 2;
 }
 
 sub _calc_mode {
-    my ($self, $list) = @_;
+    my ($self, $i, $r) = @_;
+
+    my $list = $r->{$i}{list};
 
     return unless ref $list eq 'ARRAY';
     return $list->[0] unless @{$list} > 1;
