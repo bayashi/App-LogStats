@@ -16,11 +16,12 @@ use Class::Accessor::Lite (
 );
 
 our @RESULT_LIST = (qw/
-    count sum _line_ average median mode _line_ max min range
+    count sum _line_ average median mode _line_ max min range variance
 /);
 our %MORE_RESULT = (
     median => 1,
     mode   => 1,
+    variance => 1,
 );
 
 our @DRAW_TABLE = (
@@ -229,6 +230,7 @@ sub _after_calc {
         if ($self->config->{more}) {
             $r->{$i}{median} = $self->_calc_median($i, $r);
             $r->{$i}{mode}   = $self->_calc_mode($i, $r);
+            $r->{$i}{variance} = $self->_calc_variance($i, $r);
         }
     }
 }
@@ -263,6 +265,16 @@ sub _calc_mode {
     return $self->_calc_average([keys %hash]);
 }
 
+sub _calc_variance {
+    my ($self, $i, $r) = @_;
+
+    my $list = $r->{$i}{list};
+
+    return 0 unless @{$list} > 1;
+    my $average = $r->{$i}{average};
+    return $self->_calc_sum([ map { ($_ - $average) ** 2 } @{$list} ]) / $#{$list};
+}
+
 sub _calc_average {
     my ($self, $list) = @_;
 
@@ -271,6 +283,15 @@ sub _calc_average {
         $sum += $i;
     }
     return $sum / scalar(@{$list});
+}
+
+sub _calc_sum {
+    my ($self, $list) = @_;
+
+    my $sum = 0;
+    $sum += $_ for (@{$list});
+
+    return $sum;
 }
 
 sub _finalize {
