@@ -16,13 +16,15 @@ use Class::Accessor::Lite (
 );
 
 our @RESULT_LIST = (qw/
-    count sum _line_ average median mode _line_ max min range variance stddev
+    count sum _line_
+    average median mode _line_
+    max min range variance stddev
 /);
 our %MORE_RESULT = (
-    median => 1,
-    mode   => 1,
+    median   => 1,
+    mode     => 1,
     variance => 1,
-    stddev => 1,
+    stddev   => 1,
 );
 
 our @DRAW_TABLE = (
@@ -213,7 +215,7 @@ sub _calc_line {
             $r->{$i}{sum} += $num;
             $r->{$i}{max}  = $num
                 if !defined $r->{$i}{max} || $num > $r->{$i}{max};
-            $r->{$i}{min} = $num
+            $r->{$i}{min}  = $num
                 if !defined $r->{$i}{min} || $num < $r->{$i}{min};
             push @{$r->{$i}{list}}, $num if $self->config->{more};
         }
@@ -229,10 +231,10 @@ sub _after_calc {
         $r->{$i}{average} = $r->{$i}{sum} / $r->{$i}{count};
         $r->{$i}{range}   = $r->{$i}{max} - $r->{$i}{min};
         if ($self->config->{more}) {
-            $r->{$i}{median} = $self->_calc_median($i, $r);
-            $r->{$i}{mode}   = $self->_calc_mode($i, $r);
+            $r->{$i}{median}   = $self->_calc_median($i, $r);
+            $r->{$i}{mode}     = $self->_calc_mode($i, $r);
             $r->{$i}{variance} = $self->_calc_variance($i, $r);
-            $r->{$i}{stddev} = $self->_calc_stddev($i, $r);
+            $r->{$i}{stddev}   = $self->_calc_stddev($i, $r);
         }
     }
 }
