@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use File::Spec;
 use Getopt::Long qw/GetOptionsFromArray/;
-use IO::Interactive qw/is_interactive/;
+use IO::Interactive::Tiny;
 
 our $VERSION = '0.07';
 
@@ -161,7 +161,7 @@ sub _main {
 
     my $r = +{};
 
-    if ( !is_interactive(*STDIN) ) {
+    if ( ! IO::Interactive::Tiny::is_interactive(*STDIN) ) {
 
         while ( my $line = <STDIN> ) {
             $self->_loop(\$line => $r);
