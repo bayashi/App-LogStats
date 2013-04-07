@@ -161,7 +161,7 @@ sub _main {
 
     my $r = +{};
 
-    if ( !is_interactive() ) {
+    if ( !is_interactive(*STDIN) ) {
 
         while ( my $line = <STDIN> ) {
             $self->_loop(\$line => $r);
