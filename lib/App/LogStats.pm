@@ -266,7 +266,7 @@ sub _calc_mode {
     for my $key (keys %hash) {
         delete $hash{$key} unless $hash{$key} == $max_val;
     }
-    return $self->_calc_average([keys %hash]);
+    return _calc_average([keys %hash]);
 }
 
 sub _calc_variance {
@@ -276,7 +276,7 @@ sub _calc_variance {
 
     return 0 unless @{$list} > 1;
     my $average = $r->{$i}{average};
-    return $self->_calc_sum([ map { ($_ - $average) ** 2 } @{$list} ]) / $#{$list};
+    return _calc_sum([ map { ($_ - $average) ** 2 } @{$list} ]) / $#{$list};
 }
 
 sub _calc_stddev {
@@ -289,7 +289,7 @@ sub _calc_stddev {
 }
 
 sub _calc_average {
-    my ($self, $list) = @_;
+    my $list = shift;
 
     my $sum = 0;
     for my $i (@{$list}) {
@@ -299,7 +299,7 @@ sub _calc_average {
 }
 
 sub _calc_sum {
-    my ($self, $list) = @_;
+    my $list = shift;
 
     my $sum = 0;
     $sum += $_ for (@{$list});
