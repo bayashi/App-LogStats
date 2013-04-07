@@ -7,7 +7,7 @@ use App::LogStats;
 
 {
     no warnings 'redefine';
-    *App::LogStats::is_interactive = sub { 1 };
+    *IO::Interactive::Tiny::is_interactive = sub { 1 };
 }
 
 {
