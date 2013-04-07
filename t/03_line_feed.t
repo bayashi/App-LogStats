@@ -5,10 +5,7 @@ use t::AppLogStatsTest qw/test_stats/;
 
 use App::LogStats;
 
-{
-    no warnings 'redefine';
-    *IO::Interactive::Tiny::is_interactive = sub { 1 };
-}
+t::AppLogStatsTest::set_interactive();
 
 {
     my $expect = join('',
