@@ -5,7 +5,7 @@ use File::Spec;
 use Getopt::Long qw/GetOptionsFromArray/;
 use IO::Interactive::Tiny;
 
-our $VERSION = '0.083';
+our $VERSION = '0.09';
 
 our $DEFAULT_RCFILE_NAME = '.statsrc';
 
