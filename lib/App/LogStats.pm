@@ -46,7 +46,7 @@ sub run {
 sub _prepare {
     my ($self, $argv) = @_;
 
-    my $config = $self->_set_rc( $self->_rc_file($argv) );
+    my $config = $self->_read_rc( $self->_rc_file($argv) );
     $self->_merge_opt($config, $argv);
 
     $self->config($config);
@@ -68,7 +68,7 @@ sub _rc_file {
     return $DEFAULT_RCFILE_NAME;
 }
 
-sub _set_rc {
+sub _read_rc {
     my ($self, $rc_file) = @_;
 
     my %config;
@@ -77,13 +77,13 @@ sub _set_rc {
         next unless $dir;
         my $file = File::Spec->catfile($dir, $rc_file);
         next unless -e $file;
-        $self->_read_rc($file => \%config);
+        $self->_parse_rc($file => \%config);
     }
 
     return \%config;
 }
 
-sub _read_rc {
+sub _parse_rc {
     my ($self, $file, $config) = @_;
 
     open my $fh, '<', $file or die "Could not open file: $file";
