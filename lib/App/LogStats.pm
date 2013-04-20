@@ -373,10 +373,11 @@ sub _view_table {
 }
 
 sub _quote {
-    my ($self, $value) = @_;
+    my ($self, $value, $quote) = @_;
 
     return $value unless $self->config->{csv};
-    return '"'. $value. '"';
+    $quote ||= '"';
+    return "$quote$value$quote";
 }
 
 sub _normalize {
