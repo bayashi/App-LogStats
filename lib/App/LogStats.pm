@@ -7,6 +7,8 @@ use IO::Interactive::Tiny;
 
 our $VERSION = '0.083';
 
+our $DEFAULT_RCFILE_NAME = '.statsrc';
+
 use Class::Accessor::Lite (
     new => 1,
     rw  => [qw/
@@ -63,7 +65,7 @@ sub _rc_file {
         return $opt if $rc == 1;
         $rc = 1 if $opt eq '--rc';
     }
-    return '.statsrc';
+    return $DEFAULT_RCFILE_NAME;
 }
 
 sub _set_rc {
