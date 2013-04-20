@@ -342,7 +342,7 @@ sub _view_delimited_line {
         next if $col eq '_line_';
         my @rows = ( $self->_quote($col) );
         for my $i (@fields) {
-            push @rows, $self->_quote( $self->_normalize($self->result->{$i}{$col}) );
+            push @rows, $self->_quote( $self->_facing($self->result->{$i}{$col}) );
         }
         push @output, join($delimiter, @rows);
     }
@@ -365,7 +365,7 @@ sub _view_table {
         }
         my @rows;
         for my $i (@fields) {
-            push @rows, $self->_normalize($self->result->{$i}{$col});
+            push @rows, $self->_facing($self->result->{$i}{$col});
         }
         $t->addRow($col, @rows);
     }
@@ -380,7 +380,7 @@ sub _quote {
     return "$quote$value$quote";
 }
 
-sub _normalize {
+sub _facing {
     my ($self, $value) = @_;
 
     return '-' unless defined $value;
