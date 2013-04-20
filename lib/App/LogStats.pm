@@ -57,6 +57,9 @@ sub _rc_file {
 
     my $rc = 0;
     for my $opt (@{$argv}) {
+        if ($opt =~ m!--rc=([^\s]+)!) {
+            return $1;
+        }
         return $opt if $rc == 1;
         $rc = 1 if $opt eq '--rc';
     }
