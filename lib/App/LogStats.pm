@@ -7,6 +7,8 @@ use IO::Interactive::Tiny;
 
 our $VERSION = '0.083';
 
+our $DEFAULT_RCFILE_NAME = '.statsrc';
+
 use Class::Accessor::Lite (
     new => 1,
     rw  => [qw/
@@ -44,7 +46,7 @@ sub run {
 sub _prepare {
     my ($self, $argv) = @_;
 
-    my $config = $self->_set_rc( $self->_rc_file($argv) );
+    my $config = $self->_read_rc( $self->_rc_file($argv) );
     $self->_merge_opt($config, $argv);
 
     $self->config($config);
@@ -57,28 +59,31 @@ sub _rc_file {
 
     my $rc = 0;
     for my $opt (@{$argv}) {
+        if ($opt =~ m!--rc=([^\s]+)!) {
+            return $1;
+        }
         return $opt if $rc == 1;
         $rc = 1 if $opt eq '--rc';
     }
-    return '.statsrc';
+    return $DEFAULT_RCFILE_NAME;
 }
 
-sub _set_rc {
+sub _read_rc {
     my ($self, $rc_file) = @_;
 
     my %config;
 
-    for my $dir ($ENV{STATSRC_DIR}, $ENV{HOME}, '.') {
+    for my $dir ('/etc/', $ENV{STATSRC_DIR}, $ENV{HOME}, '.') {
         next unless $dir;
         my $file = File::Spec->catfile($dir, $rc_file);
         next unless -e $file;
-        $self->_read_rc($file => \%config);
+        $self->_parse_rc($file => \%config);
     }
 
     return \%config;
 }
 
-sub _read_rc {
+sub _parse_rc {
     my ($self, $file, $config) = @_;
 
     open my $fh, '<', $file or die "Could not open file: $file";
