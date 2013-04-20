@@ -68,7 +68,7 @@ sub _set_rc {
 
     my %config;
 
-    for my $dir ($ENV{STATSRC_DIR}, $ENV{HOME}, '.') {
+    for my $dir ('/etc/', $ENV{STATSRC_DIR}, $ENV{HOME}, '.') {
         next unless $dir;
         my $file = File::Spec->catfile($dir, $rc_file);
         next unless -e $file;
@@ -342,7 +342,7 @@ sub _view_delimited_line {
         next if $col eq '_line_';
         my @rows = ( $self->_quote($col) );
         for my $i (@fields) {
-            push @rows, $self->_quote( $self->_normalize($self->result->{$i}{$col}) );
+            push @rows, $self->_quote( $self->_facing($self->result->{$i}{$col}) );
         }
         push @output, join($delimiter, @rows);
     }
@@ -365,7 +365,7 @@ sub _view_table {
         }
         my @rows;
         for my $i (@fields) {
-            push @rows, $self->_normalize($self->result->{$i}{$col});
+            push @rows, $self->_facing($self->result->{$i}{$col});
         }
         $t->addRow($col, @rows);
     }
@@ -373,13 +373,14 @@ sub _view_table {
 }
 
 sub _quote {
-    my ($self, $value) = @_;
+    my ($self, $value, $quote) = @_;
 
     return $value unless $self->config->{csv};
-    return '"'. $value. '"';
+    $quote ||= '"';
+    return "$quote$value$quote";
 }
 
-sub _normalize {
+sub _facing {
     my ($self, $value) = @_;
 
     return '-' unless defined $value;
