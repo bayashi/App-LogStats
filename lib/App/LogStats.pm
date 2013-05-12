@@ -81,7 +81,7 @@ sub _set_rc {
 sub _read_rc {
     my ($self, $file, $config) = @_;
 
-    open my $fh, '<', $file or die "Could not open file: $file";
+    open my $fh, '<', $file;
     while (<$fh>) {
         chomp;
         next if /\A\s*\Z/sm;
@@ -325,7 +325,7 @@ sub _finalize {
 
     my $lf = $self->config->{cr} ? "\r" : $self->config->{crlf} ? "\r\n" : "\n";
 
-    print $lf unless $self->config->{quiet};
+    print $lf;
     for my $line ( @{$output_lines} ) {
         print $line, $lf;
     }
